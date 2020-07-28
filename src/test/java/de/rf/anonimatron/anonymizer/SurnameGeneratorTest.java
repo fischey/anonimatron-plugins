@@ -1,13 +1,13 @@
 package de.rf.anonimatron.anonymizer;
 
-import java.net.URISyntaxException;
+import java.io.IOException;
 
 public class SurnameGeneratorTest extends AbstractNameFromFileGeneratorTest {
 	@Override
 	protected AbstractNameFromFileGenerator getObjectUnderTest() {
 		try {
 			return new SurnameGenerator();
-		} catch (final URISyntaxException e) {
+		} catch (final IOException e) {
 			throw new IllegalArgumentException("SurnameGenerator cannot be created", e);
 		}
 	}

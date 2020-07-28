@@ -1,10 +1,11 @@
 package de.rf.anonimatron.anonymizer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -17,8 +18,8 @@ import com.rolfje.anonimatron.synonyms.Synonym;
 public abstract class AbstractNameFromFileGenerator implements Anonymizer {
 	private final Set<String> _lines;
 
-	public AbstractNameFromFileGenerator(final URI uri, final Charset charset) {
-		_lines = loadNames(uri, charset);
+	public AbstractNameFromFileGenerator(final InputStream inputStream, final Charset charset) {
+		_lines = loadNames(inputStream, charset);
 	}
 
 	@Override
@@ -45,11 +46,11 @@ public abstract class AbstractNameFromFileGenerator implements Anonymizer {
 		return it -> it.length() <= size;
 	}
 
-	private Set<String> loadNames(final URI uri, final Charset charset) {
-		try {
-			return Files.lines(Paths.get(uri), charset).collect(Collectors.toSet());
+	private Set<String> loadNames(final InputStream inputStream, final Charset charset) {
+		try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream), charset))) {
+			return bufferedReader.lines().collect(Collectors.toSet());
 		} catch (final IOException e) {
-			throw new IllegalArgumentException("File " + uri.toString() + " not found", e);
+			throw new IllegalArgumentException("InputStream cannot be loaded", e);
 		}
 	}
 }

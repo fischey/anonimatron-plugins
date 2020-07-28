@@ -1,6 +1,6 @@
 package de.rf.anonimatron.anonymizer;
 
-import java.net.URISyntaxException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -8,8 +8,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class PrenameGenerator extends AbstractNameFromFileGenerator {
 
-	public PrenameGenerator() throws URISyntaxException {
-		super(PrenameGenerator.class.getResource("/prenames.csv").toURI(), StandardCharsets.UTF_8);
+	public PrenameGenerator() throws IOException {
+		super(PrenameGenerator.class.getResource("/prenames.csv").openStream(), StandardCharsets.UTF_8);
 	}
 
 	@Override
